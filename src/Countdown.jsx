@@ -9,14 +9,16 @@ class Countdown extends Component {
     this.state = {
       countnumber: 0,
       newCountnumber: 0,
-      timer: 0 
+      timer: 0,
+      zeroAlert: ''
     }
   }
   
   startCountdown(countnumber) {
     // minus 1 every 1 second
-    if(this.state.timer == 0) {
+    if(this.state.timer === 0) {
       this.setState({
+        zeroAlert: '',
         newCountnumber: countnumber, 
         timer: setInterval(() => this.countToZero(), 1000)
       });
@@ -35,8 +37,14 @@ class Countdown extends Component {
   cancelTimer() {
     clearInterval(this.state.timer);
     this.setState({timer:0, newCountnumber: 0});
+    this.showAlert();
   }
 
+  showAlert() {
+    // add alert box
+    this.setState({zeroAlert:'countdown is done'});
+  }
+  
   render() {
     return (
       <div className="Countdown">
@@ -45,6 +53,9 @@ class Countdown extends Component {
           <FormControl className="Countdown-input" placeholder='new number' onChange={event=>this.setState({countnumber: event.target.value})}/>
           <Button onClick={() => this.startCountdown(this.state.countnumber)}>Submit</Button> <Button onClick={() => this.cancelTimer()}>Cancel</Button>
         </Form>
+      {this.state.zeroAlert !== '' ? (
+        <div id="zeroAlert" className="alert alert-info">{this.state.zeroAlert}</div>) : 
+      (<div></div>)}
       </div>
     )
   }
